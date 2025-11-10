@@ -190,14 +190,18 @@ ${JSON.stringify(physicsResources, null, 2)}
 
 export async function POST(req: Request) {
   try {
-    const { messages, apiKey } = await req.json();
+    const { messages, apiKey: clientApiKey } = await req.json();
+
+    // 优先使用服务器端环境变量，其次使用客户端传递的 API Key
+    const apiKey = process.env.DEEPSEEK_API_KEY || clientApiKey;
 
     console.log('=== API Route Called ===');
+    console.log('Using server API Key:', !!process.env.DEEPSEEK_API_KEY);
     console.log('API Key present:', !!apiKey);
     console.log('API Key length:', apiKey?.length);
 
     if (!apiKey) {
-      return new Response('API Key is required', { status: 400 });
+      return new Response('API Key is required. Please configure DEEPSEEK_API_KEY environment variable.', { status: 400 });
     }
 
     // 重试机制
