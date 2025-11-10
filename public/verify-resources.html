@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify DeepSeek Resources</title>
+    <style>
+        body { font-family: monospace; padding: 20px; max-width: 1200px; }
+        button { padding: 10px 20px; font-size: 16px; margin-bottom: 20px; }
+        #status { padding: 10px; background: #f0f0f0; margin-bottom: 10px; }
+        #result { white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Verify DeepSeek API - Resource Inclusion Test</h1>
+    <button onclick="testResources()">Test API & Verify Resources</button>
+    <div id="status">Ready to test...</div>
+    <div id="result"></div>
+
+    <script>
+        async function testResources() {
+            const statusDiv = document.getElementById('status');
+            const resultDiv = document.getElementById('result');
+
+            statusDiv.innerHTML = 'Testing API call...';
+            resultDiv.innerHTML = '';
+
+            const startTime = Date.now();
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        messages: [{
+                            role: 'user',
+                            content: '请为以下用户生成物理学习路径：\n\n学习目标：掌握经典力学基础\n当前水平：高中物理基础\n每天可学习时间：1-2小时\n学习方式偏好：视频、互动工具\n\n请生成完整的JSON格式学习路径。'
+                        }],
+                        apiKey: 'sk-ba931fec9ce040b4b0bcb7dfe2fa6dde'
+                    })
+                });
+
+                const elapsed = Math.round((Date.now() - startTime) / 1000);
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    statusDiv.innerHTML = `<span class="error">❌ Failed in ${elapsed}s: ${error}</span>`;
+                    return;
+                }
+
+                statusDiv.innerHTML = `Received response in ${elapsed}s, parsing...`;
+
+                const content = await response.text();
+
+                // Parse JSON
+                const jsonMatch = content.match(/\{[\s\S]*\}/);
+                if (!jsonMatch) {
+                    statusDiv.innerHTML = '<span class="error">❌ No JSON found in response</span>';
+                    resultDiv.innerHTML = content;
+                    return;
+                }
+
+                const data = JSON.parse(jsonMatch[0]);
+
+                // Verification
+                let report = '=== VERIFICATION REPORT ===\n\n';
+                report += `✅ Response time: ${elapsed}s\n`;
+                report += `✅ Valid JSON received\n`;
+                report += `✅ Number of stages: ${data.stages?.length || 0}\n\n`;
+
+                let totalResources = 0;
+                let hasRecommended = false;
+                let hasVideoResources = false;
+                let hasInteractiveResources = false;
+
+                data.stages?.forEach((stage, sIdx) => {
+                    report += `\n📚 Stage ${sIdx + 1}: ${stage.title}\n`;
+                    report += `   Duration: ${stage.estimatedDuration}\n`;
+                    report += `   Topics: ${stage.topics?.length || 0}\n`;
+
+                    stage.topics?.forEach((topic, tIdx) => {
+                        report += `\n   📖 Topic ${tIdx + 1}: ${topic.name}\n`;
+                        report += `      Difficulty: ${topic.difficulty}\n`;
+                        report += `      Resources: ${topic.resources?.length || 0}\n`;
+
+                        totalResources += (topic.resources?.length || 0);
+
+                        topic.resources?.forEach((res, rIdx) => {
+                            report += `      ${rIdx + 1}. [${res.type}] ${res.title}\n`;
+                            report += `         Difficulty: ${res.difficulty}, Recommended: ${res.recommended}\n`;
+                            report += `         Time: ${res.estimatedTime}\n`;
+
+                            if (res.recommended) hasRecommended = true;
+                            if (res.type === 'video') hasVideoResources = true;
+                            if (res.type === 'interactive') hasInteractiveResources = true;
+                        });
+                    });
+                });
+
+                report += '\n\n=== SUMMARY ===\n';
+                report += `✅ Total resources across all topics: ${totalResources}\n`;
+                report += `${hasRecommended ? '✅' : '❌'} Has recommended resources\n`;
+                report += `${hasVideoResources ? '✅' : '❌'} Has video resources (user preference)\n`;
+                report += `${hasInteractiveResources ? '✅' : '❌'} Has interactive resources (user preference)\n`;
+
+                const allGood = totalResources > 0 && hasRecommended && hasVideoResources && hasInteractiveResources;
+
+                if (allGood) {
+                    statusDiv.innerHTML = `<span class="success">✅ TEST PASSED - All verifications successful!</span>`;
+                } else {
+                    statusDiv.innerHTML = `<span class="error">⚠️ TEST INCOMPLETE - Some resources missing</span>`;
+                }
+
+                resultDiv.innerHTML = report + '\n\n=== FULL JSON ===\n' + JSON.stringify(data, null, 2);
+
+            } catch (error) {
+                statusDiv.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+                resultDiv.innerHTML = error.stack;
+            }
+        }
+    </script>
+</body>
+</html>

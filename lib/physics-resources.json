@@ -1,0 +1,116 @@
+{
+  "mechanics": {
+    "kinematics": [
+      {
+        "type": "video",
+        "title": "李永乐老师 - 运动学基础",
+        "url": "https://www.bilibili.com",
+        "description": "通俗易懂讲解运动的描述、速度和加速度概念",
+        "estimatedTime": "30分钟",
+        "difficulty": 1,
+        "recommended": true
+      },
+      {
+        "type": "book",
+        "title": "《费曼物理学讲义》第1卷",
+        "description": "第1-3章，深入浅出介绍运动学基础",
+        "estimatedTime": "2小时",
+        "difficulty": 3,
+        "recommended": true
+      },
+      {
+        "type": "interactive",
+        "title": "PhET 运动模拟器",
+        "url": "https://phet.colorado.edu/zh_CN/simulations/moving-man",
+        "description": "交互式运动学可视化工具",
+        "estimatedTime": "20分钟",
+        "difficulty": 1,
+        "recommended": true
+      }
+    ],
+    "newton-laws": [
+      {
+        "type": "video",
+        "title": "3Blue1Brown - 牛顿运动定律的本质",
+        "url": "https://www.bilibili.com",
+        "description": "从数学角度深入理解牛顿三定律",
+        "estimatedTime": "25分钟",
+        "difficulty": 3,
+        "recommended": true
+      },
+      {
+        "type": "book",
+        "title": "《普通物理学》程守洙",
+        "description": "第二章，系统讲解牛顿运动定律及应用",
+        "estimatedTime": "3小时",
+        "difficulty": 2,
+        "recommended": true
+      }
+    ],
+    "energy": [
+      {
+        "type": "video",
+        "title": "Khan Academy - 功和能",
+        "url": "https://www.khanacademy.org",
+        "description": "详细讲解功、动能、势能和机械能守恒",
+        "estimatedTime": "45分钟",
+        "difficulty": 2,
+        "recommended": true
+      },
+      {
+        "type": "interactive",
+        "title": "PhET 能量滑板公园",
+        "url": "https://phet.colorado.edu/zh_CN/simulations/energy-skate-park",
+        "description": "可视化能量转换过程",
+        "estimatedTime": "15分钟",
+        "difficulty": 1,
+        "recommended": true
+      }
+    ]
+  },
+  "electromagnetics": {
+    "electric-field": [
+      {
+        "type": "video",
+        "title": "李永乐老师 - 电场强度与电势",
+        "url": "https://www.bilibili.com",
+        "description": "图解电场概念，深入浅出",
+        "estimatedTime": "35分钟",
+        "difficulty": 2,
+        "recommended": true
+      },
+      {
+        "type": "book",
+        "title": "《电磁学》赵凯华",
+        "description": "第1-2章，电场基础理论",
+        "estimatedTime": "4小时",
+        "difficulty": 3,
+        "recommended": false
+      }
+    ],
+    "circuits": [
+      {
+        "type": "interactive",
+        "title": "PhET 电路模拟实验",
+        "url": "https://phet.colorado.edu/zh_CN/simulations/circuit-construction-kit-dc",
+        "description": "搭建虚拟电路，理解欧姆定律",
+        "estimatedTime": "30分钟",
+        "difficulty": 2,
+        "recommended": true
+      }
+    ]
+  },
+  "thermodynamics": {
+    "basic": [
+      {
+        "type": "video",
+        "title": "中科大 - 热力学基础",
+        "url": "https://www.bilibili.com",
+        "description": "温度、内能、热力学第一定律",
+        "estimatedTime": "50分钟",
+        "difficulty": 3,
+        "recommended": true
+      }
+    ]
+  }
+}
